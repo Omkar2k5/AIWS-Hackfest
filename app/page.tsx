@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import SplineViewer from "@/components/spline-viewer"
 
-export default function LoginPage() {
+export default function HomePage() {
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Spline 3D object */}
