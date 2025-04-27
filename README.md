@@ -6,6 +6,17 @@
   <img src="https://img.shields.io/badge/Team-Deepship-orange" alt="Team Deepship"/>
 </div>
 
+## 📹 Demo
+<div align="center">
+  <video width="100%" controls>
+    <source src="./public/Output.mp4" type="video/mp4">
+  </video>
+</div>
+
+https://github.com/omkargondkar/multilingual-translator/blob/main/public/Output.mp4?raw=true
+
+[Click here to download the demo video](./public/Output.mp4)
+
 ## 🚀 Quick Links
 - [Live Demo](your_deployed_link_here)
 - [Video Demo](your_video_link_here)
