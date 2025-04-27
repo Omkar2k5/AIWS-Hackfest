@@ -6,11 +6,18 @@
   <img src="https://img.shields.io/badge/Team-Deepship-orange" alt="Team Deepship"/>
 </div>
 
+## 🌐 Live Demo
+<div align="center">
+  
+  ### [✨ Try it out here](https://multilingual-translator-d986e.web.app)
+  
+</div>
+
 ## 📹 Demo
 
 <div align="center">
   
-  ### [🎥 Click here to watch the Demo Video](https://github.com/omkargondkar/multilingual-translator/raw/main/public/Output.mp4)
+  ### [🎥 Click here to watch the Demo Video](/public/Output.mp4)
   
 </div>
 
