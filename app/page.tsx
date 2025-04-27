@@ -13,11 +13,7 @@ export default function LoginPage() {
         <SplineViewer url="https://prod.spline.design/pY4CEJVxSZ9x753F/scene.splinecode" />
       </div>
 
-      {/* Overlay with app title */}
-      <div className="absolute top-0 left-0 w-full p-8 z-10">
-        <h1 className="text-4xl font-bold text-white drop-shadow-lg">Multilingual Translator</h1>
-      </div>
-
+     
       {/* Get Started button */}
       <div className="absolute bottom-16 left-0 w-full flex justify-center items-center z-10">
         <Link href="/translator">

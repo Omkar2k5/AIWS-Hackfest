@@ -1,6 +1,4 @@
 import TranslatorInterface from "@/components/translator-interface"
-import Scene3D from "@/components/scene-3d"
-import { Suspense } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Home } from "lucide-react"
@@ -20,17 +18,8 @@ export default function TranslatorPage() {
         </div>
       </header>
 
-      <div className="flex-1 flex flex-col lg:flex-row">
-        <div className="w-full lg:w-1/2 h-[40vh] lg:h-[calc(100vh-73px)]">
-          <Suspense
-            fallback={<div className="w-full h-full flex items-center justify-center">Loading 3D scene...</div>}
-          >
-            <Scene3D />
-          </Suspense>
-        </div>
-        <div className="w-full lg:w-1/2 p-6 lg:p-12 flex items-center justify-center">
-          <TranslatorInterface />
-        </div>
+      <div className="flex-1 flex items-center justify-center p-6">
+        <TranslatorInterface />
       </div>
     </main>
   )
