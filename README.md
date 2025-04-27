@@ -7,19 +7,12 @@
 </div>
 
 ## 📹 Demo
+
 <div align="center">
-  <video width="100%" controls>
-    <source src="./public/Output.mp4" type="video/mp4">
-  </video>
+  
+  ### [🎥 Click here to watch the Demo Video](https://github.com/omkargondkar/multilingual-translator/raw/main/public/Output.mp4)
+  
 </div>
-
-https://github.com/omkargondkar/multilingual-translator/blob/main/public/Output.mp4?raw=true
-
-[Click here to download the demo video](./public/Output.mp4)
-
-## 🚀 Quick Links
-- [Live Demo](your_deployed_link_here)
-- [Video Demo](your_video_link_here)
 
 ## 💡 Project Overview
 Multilingual Translator is a real-time translation application that breaks language barriers by providing instant text translation and text-to-speech capabilities across multiple languages. Built during the CertifyO Hackathon in just 6 hours, this project demonstrates the power of modern web technologies combined with AI services.
