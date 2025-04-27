@@ -1,9 +1,7 @@
 "use server"
 
 import { TranslateClient, TranslateTextCommand } from "@aws-sdk/client-translate"
-
 import { PollyClient, SynthesizeSpeechCommand } from "@aws-sdk/client-polly"
-
 import { getLanguageVoice } from "@/lib/languages"
 
 // Initialize AWS clients
@@ -42,38 +40,21 @@ export async function translateText(text: string, sourceLanguage: string, target
 export async function synthesizeSpeech(text: string, languageCode: string): Promise<string> {
   try {
     const voice = getLanguageVoice(languageCode)
-
     const command = new SynthesizeSpeechCommand({
       Text: text,
-      VoiceId: voice,
+      VoiceId: voice as any,
       OutputFormat: "mp3",
       Engine: "neural",
     })
 
     const response = await pollyClient.send(command)
-
-    // Convert the audio stream to a base64 data URL
-    if (response.AudioStream) {
-      const chunks: Uint8Array[] = []
-      const reader = response.AudioStream.transformToWebStream().getReader()
-
-      let done = false
-      while (!done) {
-        const { value, done: doneReading } = await reader.read()
-        done = doneReading
-        if (value) {
-          chunks.push(value)
-        }
-      }
-
-      const blob = new Blob(chunks, { type: "audio/mpeg" })
-      const buffer = await blob.arrayBuffer()
-      const base64 = Buffer.from(buffer).toString("base64")
-
-      return `data:audio/mpeg;base64,${base64}`
-    }
-
-    throw new Error("No audio data received")
+    
+    // Convert the audio stream to base64
+    const audioData = await response.AudioStream?.transformToByteArray()
+    if (!audioData) throw new Error("No audio data received")
+    
+    const base64Audio = Buffer.from(audioData).toString('base64')
+    return `data:audio/mp3;base64,${base64Audio}`
   } catch (error) {
     console.error("Speech synthesis error:", error)
     throw new Error("Failed to synthesize speech")

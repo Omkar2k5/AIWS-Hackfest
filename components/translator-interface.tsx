@@ -16,8 +16,10 @@ export default function TranslatorInterface() {
   const [inputText, setInputText] = useState("")
   const [translatedText, setTranslatedText] = useState("")
   const [isTranslating, setIsTranslating] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [audioUrl, setAudioUrl] = useState("")
+  const [isPlayingSource, setIsPlayingSource] = useState(false)
+  const [isPlayingTarget, setIsPlayingTarget] = useState(false)
+  const [sourceAudioUrl, setSourceAudioUrl] = useState("")
+  const [targetAudioUrl, setTargetAudioUrl] = useState("")
   const { toast } = useToast()
 
   const handleTranslate = async () => {
@@ -28,9 +30,14 @@ export default function TranslatorInterface() {
       const result = await translateText(inputText, sourceLanguage, targetLanguage)
       setTranslatedText(result)
 
-      // Generate speech for the translated text
-      const speechData = await synthesizeSpeech(result, targetLanguage)
-      setAudioUrl(speechData)
+      // Generate speech for both source and translated text
+      const [sourceAudio, targetAudio] = await Promise.all([
+        synthesizeSpeech(inputText, sourceLanguage),
+        synthesizeSpeech(result, targetLanguage)
+      ])
+      
+      setSourceAudioUrl(sourceAudio)
+      setTargetAudioUrl(targetAudio)
     } catch (error) {
       toast({
         title: "Translation Error",
@@ -43,19 +50,27 @@ export default function TranslatorInterface() {
     }
   }
 
-  const handlePlayAudio = () => {
+  const handlePlayAudio = async (isSource: boolean) => {
+    const audioUrl = isSource ? sourceAudioUrl : targetAudioUrl
+    const setPlaying = isSource ? setIsPlayingSource : setIsPlayingTarget
+
     if (!audioUrl) return
 
     const audio = new Audio(audioUrl)
-    setIsPlaying(true)
+    setPlaying(true)
 
     audio.onended = () => {
-      setIsPlaying(false)
+      setPlaying(false)
     }
 
     audio.play().catch((err) => {
       console.error("Audio playback error:", err)
-      setIsPlaying(false)
+      setPlaying(false)
+      toast({
+        title: "Playback Error",
+        description: "Failed to play audio. Please try again.",
+        variant: "destructive",
+      })
     })
   }
 
@@ -72,7 +87,8 @@ export default function TranslatorInterface() {
   const handleReset = () => {
     setInputText("")
     setTranslatedText("")
-    setAudioUrl("")
+    setSourceAudioUrl("")
+    setTargetAudioUrl("")
   }
 
   const handleSwapLanguages = () => {
@@ -81,7 +97,8 @@ export default function TranslatorInterface() {
     setTargetLanguage(temp)
     setInputText(translatedText)
     setTranslatedText("")
-    setAudioUrl("")
+    setSourceAudioUrl("")
+    setTargetAudioUrl("")
   }
 
   return (
@@ -143,6 +160,21 @@ export default function TranslatorInterface() {
         </div>
 
         <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <h3 className="text-sm font-medium">Input Text</h3>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handlePlayAudio(true)}
+              disabled={!sourceAudioUrl || isPlayingSource}
+            >
+              {isPlayingSource ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Volume2 className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
           <Textarea
             placeholder="Enter text to translate..."
             className="min-h-[120px] resize-none"
@@ -159,9 +191,17 @@ export default function TranslatorInterface() {
                 <Copy className="h-4 w-4 mr-2" />
                 Copy
               </Button>
-              <Button variant="outline" size="sm" onClick={handlePlayAudio} disabled={!audioUrl || isPlaying}>
-                <Volume2 className="h-4 w-4 mr-2" />
-                Listen
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handlePlayAudio(false)}
+                disabled={!targetAudioUrl || isPlayingTarget}
+              >
+                {isPlayingTarget ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Volume2 className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </div>
